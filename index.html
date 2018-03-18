@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="styles/styles.css"> -->
+    <title>Document</title>
+</head>
+<body>
+    <button id="start-game">Start Game!</button>
+    <div id="question-view"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+    // ensure DOM is ready for jquery and javascript goodness
+    $(document).ready(function() {
+        // startGame();
+    
+    // VARIABLES - It aint my birthday but I got my name on the cake.
+    // ====================================================================================
+        var questionOne = {
+            question: "Question One",
+        //     answerOne:"One",
+        //     answerTwo:"Two",
+        //     answerThree:"Three",
+        };
+        
+        var questionTwo = {
+            question: "Question Two",
+        //     answerOne:"One",
+        //     answerTwo:"Two",
+        //     answerThree:"Three",
+        };
+
+        var questionIndex = [questionOne.question, questionTwo.question];
+
+        console.log(questionIndex);
+
+    // FUNTIONS - What we doin'? Gettin' money. What they doin'? Hatin' on us.
+    // =============================================================================================
+    // API call - gets info to create objects 
+    // $("").on("click", function(event) {
+
+    //     // Prevent button from trying to submit a form when clicked
+    //     event.preventDefault();
+        
+    //     // Define API call URL
+    //     var queryURL = "https://opentdb.com/api.php?amount=10&category=18&difficulty=easy&type=multiple";
+
+    //     // Make the API call and console log result
+    //     $.ajax({
+    //     url: queryURL,
+    //     method: "GET"
+    //     }).then(function(response) {
+    //     console.log(response);
+    //     });
+
+    // });
+
+    // Array builder - Create array question objects
+    // function arrayBuilder(){
+    //     for()
+    // }
+
+    // Game start - initiate array builder, load questions and answers to DOM
+        // function startGame() {
+            $("#start-game").on("click", function(event) {
+
+                // Remove start game button
+                $("#start-game").remove();
+
+                // Display questions and answer options on DOM
+                for (var i = 0; i < questionIndex.length; i++) {
+                    
+                    // create div 
+                    var questionDiv = $("<div>").text(questionIndex[i])
+
+                    // Append questions to DOM
+                    $("#question-view").append(questionDiv);
+                };
+            });
+        // };
+
+    // Array builder - Create array question objects
+    // Object builder - builds question obejcts 
+
+    // Question displayer - loops over question array and puts question and answers onto DOM
+    // Response checker - determines if a question is correct or not
+    // Score counter - keeps tack of response accuracy
+    // Game over - ends game when all questions are answerd or time runs out
+    // displays score - shows score on DOM
+    // Reset game - resets score counters, question responses, and timer
+
+
+    // MAIN Process - Stuntin' like my daddy.
+    // ====================================================================================
+    // When user clicks start button populate dom
+    // Once DOM is populated, start timer
+    // When the timer runs out or user submits responses show score and reset button
+    // When the user clicks reset, reset game.
+        });
+    </script>
+</body>
+</html>
