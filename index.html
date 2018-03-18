@@ -9,8 +9,13 @@
     <title>Document</title>
 </head>
 <body>
-    <button id="start-game">Start Game!</button>
-    <div id="question-view"></div>
+    <div id="main">
+        <div class="game">
+            <div id="count-down"></div>
+            <button id="start-game">Start Game!</button>
+            <div id="question-view"></div>
+        </div>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
 
@@ -32,94 +37,123 @@
 
         var questionIndex = [questionOne, questionTwo];
         
-
-        console.log(questionIndex);
-        console.log(questionOne, questionTwo);
-        console.log(questionIndex[1].answerIndex);
+        let timeRemaining = 5
+        
 
     // FUNTIONS - What we doin'? Gettin' money. What they doin'? Hatin' on us.
     // =============================================================================================
-    // API call - gets info to create objects 
-    // $("").on("click", function(event) {
+        // Game over - ends game when all questions are answerd or time runs out
+        function gameOver (){
+            // Remove timer, questions, answers, and responses.
+            $("#question-view").remove();
+            $("#count-down").remove();
 
-    //     // Prevent button from trying to submit a form when clicked
-    //     event.preventDefault();
+            //Show game over message
+            $(".game").append('<div id="game-over-title"><h1>Game Over</h1></div');
+
+            //Display New Game button
+            $(".game").append('<button id="reset-game">New Game</button>');
+        };
         
-    //     // Define API call URL
-    //     var queryURL = "https://opentdb.com/api.php?amount=10&category=18&difficulty=easy&type=multiple";
+        //Starts countdown timer
+        function startCountdown(){
 
-    //     // Make the API call and console log result
-    //     $.ajax({
-    //     url: queryURL,
-    //     method: "GET"
-    //     }).then(function(response) {
-    //     console.log(response);
-    //     });
+            //Update count down timer every second
+            setInterval(countDown, 1000)
 
-    // });
+            //Stope game when time is up
+            setTimeout(gameOver, 1000 * timeRemaining);
+        };
 
-    // Array builder - Create array question objects
-    // function arrayBuilder(){
-    //     for()
-    // }
+        //Reduce time remaining by one and display new count on DOM
+        function countDown(){
+            timeRemaining --;
+            $("#count-down").text(timeRemaining);
+        };
+        
+        //Put questions and answers on DOM
+        function displayQuestions(){
 
-    // Game start - initiate array builder, load questions and answers to DOM
-        function startGame() {
-            $("#start-game").on("click", function(event) {
-
-                // Remove start game button
-                $("#start-game").remove();
-
-                // Display questions and answer options on DOM
-                for (var i = 0; i < questionIndex.length; i++) {
+            //iterate over question array
+            for (var i = 0; i < questionIndex.length; i++) {
                     
-                    // create new div and ID for each question
-                    var questionDiv = $(`<div id="question-${i}">`);
+                // create new div and ID for each question
+                let questionDiv = $(`<div class="questionDiv" id="question-${i}">`);
                     
-                    // add each question's text within its div
-                    questionDiv.text(questionIndex[i].questionText);
+                // add each question's text within its div
+                questionDiv.text(questionIndex[i].questionText);
 
-                    // Append div to DOM
-                    $("#question-view").append(questionDiv);
+                // Append div to DOM
+                $("#question-view").append(questionDiv);
 
-                    // create div to hold each question's answers
-                    var answerDiv = $(`<div id="answer-${i}">`);
+                // create div to hold each question's answers
+                let answerDiv = $(`<div class="answerDiv" id="answer-${i}">`);
 
-                    // // append answerDiv to questionDiv
-                    $("#question-" + i).append(answerDiv);
+                // append answerDiv to questionDiv
+                $("#question-" + i).append(answerDiv);
 
-                    let questionAnswers = questionIndex[i].answerIndex;
+                let questionAnswers = questionIndex[i].answerIndex;
 
-                    // Iterate through the answerIndex for each question
-                    for (var j = 0; j < questionAnswers.length; j++) {
+                // Iterate through the answerIndex for each question
+                for (var j = 0; j < questionAnswers.length; j++) {
                         
                     // Create new button for each answer within the answerIndex
-                    let answerButton  = $("<button>").text(questionAnswers[j]);
+                    let answerButton  = $('<input type="radio" class="answer" id="radioButton">').text(questionAnswers[j]);
 
                     // Append new buttons to answer div
                     $("#answer-" + i).append(answerButton);
-                    };
                 };
-            });
-         };
+            };
+        };
 
-    // Array builder - Create array question objects
-    // Object builder - builds question obejcts 
     // Response checker - determines if a question is correct or not
+
     // Score counter - keeps tack of response accuracy
-    // Game over - ends game when all questions are answerd or time runs out
+
     // displays score - shows score on DOM
-    // Reset game - resets score counters, question responses, and timer
+
+    
 
     // MAIN Process - Stuntin' like my daddy.
     // ====================================================================================
-    // When user clicks start button populate dom
-    // Once DOM is populated, start timer
-    // When the timer runs out or user submits responses show score and reset button
-    // When the user clicks reset, reset game.
 
-    startGame();
+        // When user clicks start initiate everything
+        $("#start-game").on("click", function(event) {
+            
+            // remove startGame button
+            $("#start-game").remove();
+
+            // Display questions and answer options on DOM
+            displayQuestions();
+
+            // start countdown clock
+            startCountdown();
         });
+
+        // When the user clicks reset, reset game.
+        $("#reset-game").on("click", function(event) {
+           
+            //Remove score and game over banner
+            $("#game-over-title").remove();
+            $("#reset-game").remove();
+            
+            //Replace count down div
+            $("#game").append('<div id="count-down"></div>');
+            
+            //Replace question view div
+            $("#game").append('<div id="question-view"></div>');
+
+            //reset time counter
+            timeRemaining = 5
+
+            // Display questions and answer options on DOM
+            displayQuestions();
+
+            // start countdown clock
+            startCountdown();
+        });
+            
+    });
     </script>
 </body>
 </html>
