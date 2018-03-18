@@ -21,22 +21,21 @@
     // VARIABLES - It aint my birthday but I got my name on the cake.
     // ====================================================================================
         var questionOne = {
-            question: "Question One",
-        //     answerOne:"One",
-        //     answerTwo:"Two",
-        //     answerThree:"Three",
+            questionText: "Question One",
+            answerIndex: [ "One", "Two", "Three"],
         };
         
         var questionTwo = {
-            question: "Question Two",
-        //     answerOne:"One",
-        //     answerTwo:"Two",
-        //     answerThree:"Three",
+            questionText: "Question Two",
+            answerIndex: [ "One", "Two", "Three"],
         };
 
-        var questionIndex = [questionOne.question, questionTwo.question];
+        var questionIndex = [questionOne, questionTwo];
+        
 
         console.log(questionIndex);
+        console.log(questionOne, questionTwo);
+        console.log(questionIndex[1].answerIndex);
 
     // FUNTIONS - What we doin'? Gettin' money. What they doin'? Hatin' on us.
     // =============================================================================================
@@ -65,7 +64,7 @@
     // }
 
     // Game start - initiate array builder, load questions and answers to DOM
-        // function startGame() {
+        function startGame() {
             $("#start-game").on("click", function(event) {
 
                 // Remove start game button
@@ -74,25 +73,43 @@
                 // Display questions and answer options on DOM
                 for (var i = 0; i < questionIndex.length; i++) {
                     
-                    // create div 
-                    var questionDiv = $("<div>").text(questionIndex[i])
+                    // create new div and ID for each question
+                    var questionDiv = $(`<div id="question-${i}">`);
+                    
+                    // add each question's text within its div
+                    questionDiv.text(questionIndex[i].questionText);
 
-                    // Append questions to DOM
+                    // Append div to DOM
                     $("#question-view").append(questionDiv);
+
+                    // create div to hold each question's answers
+                    var answerDiv = $(`<div id="answer-${i}">`);
+
+                    // // append answerDiv to questionDiv
+                    $("#question-" + i).append(answerDiv);
+
+                    let questionAnswers = questionIndex[i].answerIndex;
+
+                    // Iterate through the answerIndex for each question
+                    for (var j = 0; j < questionAnswers.length; j++) {
+                        
+                    // Create new button for each answer within the answerIndex
+                    let answerButton  = $("<button>").text(questionAnswers[j]);
+
+                    // Append new buttons to answer div
+                    $("#answer-" + i).append(answerButton);
+                    };
                 };
             });
-        // };
+         };
 
     // Array builder - Create array question objects
     // Object builder - builds question obejcts 
-
-    // Question displayer - loops over question array and puts question and answers onto DOM
     // Response checker - determines if a question is correct or not
     // Score counter - keeps tack of response accuracy
     // Game over - ends game when all questions are answerd or time runs out
     // displays score - shows score on DOM
     // Reset game - resets score counters, question responses, and timer
-
 
     // MAIN Process - Stuntin' like my daddy.
     // ====================================================================================
@@ -100,6 +117,8 @@
     // Once DOM is populated, start timer
     // When the timer runs out or user submits responses show score and reset button
     // When the user clicks reset, reset game.
+
+    startGame();
         });
     </script>
 </body>
