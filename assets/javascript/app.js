@@ -6,15 +6,63 @@ $(document).ready(function() {
     // ====================================================================================
         const questions = [
             {
-                questionText: "Question One",
-                options: [ "One", "Two", "Three"],
-                correctAnswer: "One"
+            questionText: "Which internet company began life as an online bookstore called &#039;Cadabra&#039;?",
+            correctAnswer: "Amazon",
+            options: ["Amazon", "eBay", "Overstock", "Shopify"]
             },
-            
+                
             {
-                questionText: "Question Two",
-                options: ["One", "Two", "Three"],
-                correctAnswer: "Two"
+            questionText: "Which of these is the name for the failed key escrow device introduced by the National Security Agency in 1993?",
+            correctAnswer: "Clipper Chip",
+            options: ["Enigma Machine", "Clipper Chip", "Skipjack", "Nautilus"]
+            },
+                
+            {
+            questionText: "While Apple was formed in California, in which western state was Microsoft founded?",
+            correctAnswer: "New Mexico",
+            options: ["Washington", "Colorado", "Arizona", "New Mexico"]
+            },
+                
+            {
+            questionText: "How many cores does the Intel i7-6950X have?",
+            correctAnswer: "10",
+            options: ["10", "12", "8", "4"]
+            },
+                
+            {
+            questionText: "Which coding language was the #1 programming language in terms of usage on GitHub in 2015?",
+            correctAnswer: "JavaScript",
+            options: ["C#", "JavaScript", "Python", "PHP"]
+            },
+                
+            {
+            questionText: "Which of these programming languages is a low-level language?",
+            correctAnswer: "Assembly",
+            options: ["Python", "C#", "Assembly", "Pascal"]
+            },
+                
+            {
+            questionText: "Which of the following is a personal computer made by the Japanese company Fujitsu?",
+            correctAnswer: "FM-7",
+            options: ["PC-9801", "Xmillennium ", "FM-7", "MSX"]
+            },
+                
+            {
+            questionText: ".rs is the top-level domain for what country?",
+            correctAnswer: "Serbia",
+            options: ["Serbia", "Romania", "Russia", "Rwanda"]
+            },
+                
+            {
+            questionText: "When did the online streaming service &quot;Mixer&quot; launch?",
+            options: ["2013", "2009", "2016", "2011"],
+            correctAnswer: "2016"
+            },
+                
+            {
+            questionText: "Laserjet and inkjet printers are both examples of what type of printer?",
+            correctAnswer: "Non-impact printer",
+            options: ["Impact printer", "Non-impact printer", "Daisywheel printer", "Dot matrix printer"]
             }
         ]
         
@@ -45,18 +93,17 @@ $(document).ready(function() {
                 }
              }
 
-            // Display the score
-            $("#total").text(`Total: ${10 - wrongCounter - missedCounter}`);
-            $("#correct").text(`Correct: ${correctCounter}`);
-            $("#incorrect").text(`Wrong: ${wrongCounter}`);
-            $("#missed").text(`Missed: ${missedCounter}`);
-
-
             // Hide timer, questions, answers, and responses.
             $("#question-view").hide();
             $("#count-down").hide();
             $("#end-game").hide();
             $("#game-title").hide();
+
+            // Display the score
+            $("#total").text(`Total: ${10 - wrongCounter - missedCounter}`);
+            $("#correct").text(`Correct: ${correctCounter}`);
+            $("#incorrect").text(`Wrong: ${wrongCounter}`);
+            $("#missed").text(`Missed: ${missedCounter}`);
 
             //Show game over message and score
             $("#game-over-banner").show();
@@ -109,7 +156,7 @@ $(document).ready(function() {
             for (let i = 0; i < questions.length; i++) {
                     
                 // create new div and ID for each question
-                let questionDiv = $(`<div class="col-md-offset-5 col-md-2 text-center" id="question-${i}">`);
+                let questionDiv = $(`<div class="col-md-12 text-center question" id="question-${i}">`);
                     
                 // Place each question's text within its div
                 questionDiv.text(questions[i].questionText);
