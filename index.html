@@ -4,46 +4,134 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <!-- <link rel="stylesheet" href="styles/styles.css"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/style.css">
     <title>Document</title>
 </head>
 <body>
-    <div id="main">
-        <div class="game">
-            <div id="count-down"></div>
-            <button id="start-game">Start Game!</button>
-            <div id="question-view"></div>
+    <div class="container" id="main">
+        <div class="row">
+            <div class="col-md-offset-4 col-md-4 title text-center">
+                <h1>Trivia Game!</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-offset-5 col-md-2 text-center">
+                <button id="start-game">
+                    Start Game!
+                </button>
+            </div>
+        </div>
+        <div class="row" id="count-down">
+             <div class="col-md-offset-4 col-md-4 text-center">
+                <p>
+                Timer goes here
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-offset-5 col-md-2 text-center" id="question-view">
+            <p>Questions go here</p>
+            </div>
+        </div>
+        <div class="row Responses">
+            <div class="col-md-offset-4 col-md-1">
+                Response 1
+            </div>
+            <div class="col-md-1">
+                Response 2
+            </div>
+            <div class="col-md-1">
+                Response 3
+            </div>
+            <div class="col-md-1">
+                Response 4
+            </div>
+        </div>
+        <div class="row finished button text-center">
+            <div class="col-md-offset-5 col-md-2">
+                <button id="start-game">
+                    I'm Done!
+                </button>
+            </div>
+        </div>
+        <div class="row End game banner">
+            <div class="col-md-offset-4 col-md-4 text-center">
+                <h1>Game over!</h1>
+            </div>
+        </div>
+        <div class="row Score">
+            <div class="col-md-offset-4 col-md-1">
+                Score:
+            </div>
+            <div class="col-md-1">
+                Right:
+            </div>
+            <div class="col-md-1">
+                Wrong: 
+            </div>
+            <div class="col-md-1">
+                Skipped:
+            </div>
+        </div>
+        <div class="row Restart button">
+            <div class="col-md-offset-5 col-md-2 text-center">
+                <button id="start-game">
+                    New Game!
+                </button>
+            </div>
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
 
-    // ensure DOM is ready for jquery and javascript goodness
+
     $(document).ready(function() {
-        // startGame();
     
     // VARIABLES - It aint my birthday but I got my name on the cake.
     // ====================================================================================
-        var questionOne = {
-            questionText: "Question One",
-            answerIndex: [ "One", "Two", "Three"],
-        };
+        const questions = [
+            {
+                questionText: "Question One",
+                options: [ "One", "Two", "Three"],
+                correctAnswer: "One"
+            },
+            
+            {
+                questionText: "Question Two",
+                options: ["One", "Two", "Three"],
+                correctAnswer: "Two"
+            }
+        ]
         
-        var questionTwo = {
-            questionText: "Question Two",
-            answerIndex: [ "One", "Two", "Three"],
-        };
+        let timeRemaining = 3
+        let countdownID = -1;
+        
 
-        var questionIndex = [questionOne, questionTwo];
-        
-        let timeRemaining = 5
-        
-
-    // FUNTIONS - What we doin'? Gettin' money. What they doin'? Hatin' on us.
+    // FUCNTIONS - What we doin'? Gettin' money. What they doin'? Hatin' on us.
     // =============================================================================================
         // Game over - ends game when all questions are answerd or time runs out
-        function gameOver (){
+        function gameOver(){
+            clearInterval(countdownID)
+            let correctCounter = 0
+            let wrongCounter = 0
+            let missedCounter = 0
+            // figure out the score
+            for (let i = 0; i < questions.length; i++) {
+               const selectedOption = $(`#answer-${i}`).children(":checked").text()
+               console.log(selectedOption);
+                if (selectedOption === "") {
+                    missedCounter++;
+                } else if (selectedOption === questions[i].correctAnswer) {
+                    correctCounter++;
+                } else {
+                    wrongCounter++;
+                }
+            }
+
+            console.log('missed:', missedCounter, 'correct:', correctCounter, 'wrong:', wrongCounter)
+
+
             // Remove timer, questions, answers, and responses.
             $("#question-view").remove();
             $("#count-down").remove();
@@ -57,31 +145,31 @@
         
         //Starts countdown timer
         function startCountdown(){
-
             //Update count down timer every second
-            setInterval(countDown, 1000)
-
-            //Stope game when time is up
-            setTimeout(gameOver, 1000 * timeRemaining);
+            countdownID = setInterval(countDown, 1000)
         };
 
         //Reduce time remaining by one and display new count on DOM
         function countDown(){
-            timeRemaining --;
-            $("#count-down").text(timeRemaining);
+            if (timeRemaining > 0) {
+                timeRemaining --;
+                $("#count-down").text(timeRemaining);
+            } else {
+                gameOver();
+            }
         };
         
         //Put questions and answers on DOM
-        function displayQuestions(){
+        function displayQuestions() {
 
             //iterate over question array
-            for (var i = 0; i < questionIndex.length; i++) {
+            for (let i = 0; i < questions.length; i++) {
                     
                 // create new div and ID for each question
                 let questionDiv = $(`<div class="questionDiv" id="question-${i}">`);
                     
                 // add each question's text within its div
-                questionDiv.text(questionIndex[i].questionText);
+                questionDiv.text(questions[i].questionText);
 
                 // Append div to DOM
                 $("#question-view").append(questionDiv);
@@ -92,13 +180,15 @@
                 // append answerDiv to questionDiv
                 $("#question-" + i).append(answerDiv);
 
-                let questionAnswers = questionIndex[i].answerIndex;
+                // Create array that consists of the incorrect answers + the correct answer and randomize it
+                // questionAnswers = shuffle(question[i].incorrect_answers.push(correct_answer))
+                let questionAnswers = questions[i].options;
 
                 // Iterate through the answerIndex for each question
-                for (var j = 0; j < questionAnswers.length; j++) {
+                for (let j = 0; j < questionAnswers.length; j++) {
                         
                     // Create new button for each answer within the answerIndex
-                    let answerButton  = $('<input type="radio" class="answer" id="radioButton">').text(questionAnswers[j]);
+                    let answerButton  = $(`<input type="radio" class="answer" name="answers-${i}">`).text(questionAnswers[j]);
 
                     // Append new buttons to answer div
                     $("#answer-" + i).append(answerButton);
@@ -106,9 +196,6 @@
             };
         };
 
-    // Response checker - determines if a question is correct or not
-
-    // Score counter - keeps tack of response accuracy
 
     // displays score - shows score on DOM
 
@@ -121,12 +208,12 @@
         $("#start-game").on("click", function(event) {
             
             // remove startGame button
-            $("#start-game").remove();
+            $("#start-game").hide();
 
             // Display questions and answer options on DOM
             displayQuestions();
 
-            // start countdown clock
+            // Start countdown clock
             startCountdown();
         });
 
