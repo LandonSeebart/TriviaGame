@@ -10,237 +10,55 @@
 </head>
 <body>
     <div class="container" id="main">
-        <div class="row">
-            <div class="col-md-offset-4 col-md-4 title text-center">
+        <div class="row" id="game-title">
+            <div class="col-md-offset-4 col-md-4 text-center">
                 <h1>Trivia Game!</h1>
             </div>
         </div>
-        <div class="row">
+        <div class="row" id="start-game">
             <div class="col-md-offset-5 col-md-2 text-center">
-                <button id="start-game">
+                <button>
                     Start Game!
                 </button>
             </div>
         </div>
-        <div class="row" id="count-down">
-             <div class="col-md-offset-4 col-md-4 text-center">
-                <p>
-                Timer goes here
-                </p>
-            </div>
-        </div>
         <div class="row">
-            <div class="col-md-offset-5 col-md-2 text-center" id="question-view">
-            <p>Questions go here</p>
+             <div class="col-md-offset-4 col-md-4 text-center" id="count-down">
             </div>
         </div>
-        <div class="row Responses">
-            <div class="col-md-offset-4 col-md-1">
-                Response 1
-            </div>
-            <div class="col-md-1">
-                Response 2
-            </div>
-            <div class="col-md-1">
-                Response 3
-            </div>
-            <div class="col-md-1">
-                Response 4
-            </div>
+        <div class="row" id="question-view">
         </div>
-        <div class="row finished button text-center">
+        <div class="row text-center" id="end-game">
             <div class="col-md-offset-5 col-md-2">
-                <button id="start-game">
+                <button>
                     I'm Done!
                 </button>
             </div>
         </div>
-        <div class="row End game banner">
+        <div class="row" id="game-over-banner">
             <div class="col-md-offset-4 col-md-4 text-center">
-                <h1>Game over!</h1>
+                <h1>
+                Game over!
+                </h1>
             </div>
         </div>
-        <div class="row Score">
-            <div class="col-md-offset-4 col-md-1">
-                Score:
-            </div>
-            <div class="col-md-1">
-                Right:
-            </div>
-            <div class="col-md-1">
-                Wrong: 
-            </div>
-            <div class="col-md-1">
-                Skipped:
+        <div class="row text-center" id="score">
+            <div class="col-md-2 col-md-offset-5"> 
+                <p id="correct"></p>
+                <p id="incorrect"></p>
+                <p id="missed"></p>
+                <p id="total"></p>
             </div>
         </div>
-        <div class="row Restart button">
+        <div class="row" id="new-game">
             <div class="col-md-offset-5 col-md-2 text-center">
-                <button id="start-game">
-                    New Game!
+                <button>
+                    Play Again!
                 </button>
             </div>
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript">
-
-
-    $(document).ready(function() {
-    
-    // VARIABLES - It aint my birthday but I got my name on the cake.
-    // ====================================================================================
-        const questions = [
-            {
-                questionText: "Question One",
-                options: [ "One", "Two", "Three"],
-                correctAnswer: "One"
-            },
-            
-            {
-                questionText: "Question Two",
-                options: ["One", "Two", "Three"],
-                correctAnswer: "Two"
-            }
-        ]
-        
-        let timeRemaining = 3
-        let countdownID = -1;
-        
-
-    // FUCNTIONS - What we doin'? Gettin' money. What they doin'? Hatin' on us.
-    // =============================================================================================
-        // Game over - ends game when all questions are answerd or time runs out
-        function gameOver(){
-            clearInterval(countdownID)
-            let correctCounter = 0
-            let wrongCounter = 0
-            let missedCounter = 0
-            // figure out the score
-            for (let i = 0; i < questions.length; i++) {
-               const selectedOption = $(`#answer-${i}`).children(":checked").text()
-               console.log(selectedOption);
-                if (selectedOption === "") {
-                    missedCounter++;
-                } else if (selectedOption === questions[i].correctAnswer) {
-                    correctCounter++;
-                } else {
-                    wrongCounter++;
-                }
-            }
-
-            console.log('missed:', missedCounter, 'correct:', correctCounter, 'wrong:', wrongCounter)
-
-
-            // Remove timer, questions, answers, and responses.
-            $("#question-view").remove();
-            $("#count-down").remove();
-
-            //Show game over message
-            $(".game").append('<div id="game-over-title"><h1>Game Over</h1></div');
-
-            //Display New Game button
-            $(".game").append('<button id="reset-game">New Game</button>');
-        };
-        
-        //Starts countdown timer
-        function startCountdown(){
-            //Update count down timer every second
-            countdownID = setInterval(countDown, 1000)
-        };
-
-        //Reduce time remaining by one and display new count on DOM
-        function countDown(){
-            if (timeRemaining > 0) {
-                timeRemaining --;
-                $("#count-down").text(timeRemaining);
-            } else {
-                gameOver();
-            }
-        };
-        
-        //Put questions and answers on DOM
-        function displayQuestions() {
-
-            //iterate over question array
-            for (let i = 0; i < questions.length; i++) {
-                    
-                // create new div and ID for each question
-                let questionDiv = $(`<div class="questionDiv" id="question-${i}">`);
-                    
-                // add each question's text within its div
-                questionDiv.text(questions[i].questionText);
-
-                // Append div to DOM
-                $("#question-view").append(questionDiv);
-
-                // create div to hold each question's answers
-                let answerDiv = $(`<div class="answerDiv" id="answer-${i}">`);
-
-                // append answerDiv to questionDiv
-                $("#question-" + i).append(answerDiv);
-
-                // Create array that consists of the incorrect answers + the correct answer and randomize it
-                // questionAnswers = shuffle(question[i].incorrect_answers.push(correct_answer))
-                let questionAnswers = questions[i].options;
-
-                // Iterate through the answerIndex for each question
-                for (let j = 0; j < questionAnswers.length; j++) {
-                        
-                    // Create new button for each answer within the answerIndex
-                    let answerButton  = $(`<input type="radio" class="answer" name="answers-${i}">`).text(questionAnswers[j]);
-
-                    // Append new buttons to answer div
-                    $("#answer-" + i).append(answerButton);
-                };
-            };
-        };
-
-
-    // displays score - shows score on DOM
-
-    
-
-    // MAIN Process - Stuntin' like my daddy.
-    // ====================================================================================
-
-        // When user clicks start initiate everything
-        $("#start-game").on("click", function(event) {
-            
-            // remove startGame button
-            $("#start-game").hide();
-
-            // Display questions and answer options on DOM
-            displayQuestions();
-
-            // Start countdown clock
-            startCountdown();
-        });
-
-        // When the user clicks reset, reset game.
-        $("#reset-game").on("click", function(event) {
-           
-            //Remove score and game over banner
-            $("#game-over-title").remove();
-            $("#reset-game").remove();
-            
-            //Replace count down div
-            $("#game").append('<div id="count-down"></div>');
-            
-            //Replace question view div
-            $("#game").append('<div id="question-view"></div>');
-
-            //reset time counter
-            timeRemaining = 5
-
-            // Display questions and answer options on DOM
-            displayQuestions();
-
-            // start countdown clock
-            startCountdown();
-        });
-            
-    });
-    </script>
+    <script src="assets/javascript/app.js"></script>
 </body>
 </html>

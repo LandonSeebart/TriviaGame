@@ -1,4 +1,9 @@
-div {
-   border-color: red;
-   border-style: solid;
+body {
+    background-color: #677E8C;
+    color: rgb(235, 239, 242)
+}
+
+button {
+    background-color: #45Ace5;
+    border: none;
 }
